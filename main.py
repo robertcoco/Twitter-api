@@ -1,7 +1,8 @@
 #Python
 from uuid import UUID
 from typing import Optional
-from datetime import date
+from datetime import date, datetime
+
 
 #Pydantic
 from pydantic import BaseModel
@@ -15,8 +16,11 @@ app = FastAPI()
 
 #Models
 
-class Twitter():
-    pass
+class Tweet():
+    tweet_id : UUID = Field(...)
+    content : str = Field(...)
+    created_at: datetime = Field(...)
+    updated_at: datetime = Field(default= datetime.now())
 
 class UserBase(BaseModel):
     user_id : UUID = Field(...)
@@ -25,7 +29,8 @@ class UserBase(BaseModel):
 class UserLogin(UserBase):
     password: str = Field(
         ...,
-        min_length = 8
+        min_length = 8,
+        max_length = 64
         )
 
 class User(UserBase):
