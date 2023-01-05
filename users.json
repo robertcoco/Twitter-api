@@ -1,1 +1,26 @@
-[]
+[
+    {
+        "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "Email": "roberto@example.com",
+        "first_name": "Roberto \u00c1ngel",
+        "last_name": "Abad De Los santos",
+        "birth_date": "2003-09-10",
+        "password": "angeleselmejor10"
+    },
+    {
+        "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "Email": "roberto@example.com",
+        "first_name": "Roberto \u00c1ngel",
+        "last_name": "Abad De Los santos",
+        "birth_date": "2003-09-10",
+        "password": "angeleselmejor10"
+    },
+    {
+        "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "Email": "roberto@example.com",
+        "first_name": "Roberto \u00c1ngel",
+        "last_name": "Abad De Los santos",
+        "birth_date": "2003-09-10",
+        "password": "angeleselmejor10"
+    }
+]
