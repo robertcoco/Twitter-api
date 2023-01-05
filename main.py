@@ -17,11 +17,11 @@ app = FastAPI()
 
 #Models
 
-class Tweet():
+class Tweet(BaseModel):
     tweet_id : UUID = Field(...)
     content : str = Field(...)
     created_at: datetime = Field(...)
-    updated_at: datetime = Field(default= datetime.now())
+    updated_at: datetime = Field(default = datetime.now())
 
 class UserBase(BaseModel):
     user_id : UUID = Field(...)
@@ -132,7 +132,6 @@ def update_user():
 ### Show all tweets
 @app.get(
     path = "/",
-    response_model= List[Tweet],
     status_code = status.HTTP_200_OK,
     summary = "Show all tweets",
     tags = ["Tweets"]
@@ -140,6 +139,18 @@ def update_user():
 
 def home():
     return {"Twitter API" : "working"}
+
+### Show a tweet
+@app.get(
+    path = "tweets/{tweet_id}",
+    response_model = Tweet,
+    status_code = status.HTTP_200_OK,
+    summary  = "Show a tweet",
+    tags = ["Tweets"]
+    )
+
+def show_a_tweet():
+    pass
 
 ### Post a tweet
 @app.post(
@@ -153,24 +164,13 @@ def home():
 def post():
     pass
 
-### Show a tweet
-@app.get(
-    path = "tweets/{tweet_id}",
-    response_modeel = Tweet,
-    status_code = status.HTTP_200_OK,
-    summary  = "Show a tweet",
-    tags = ["Tweets"]
-    )
-
-def show_a_tweet():
-    pass
-
 ### Delete a tweet
 @app.delete(
     path = "tweets/{tweet_id}/delete",
     response_model = Tweet,
     status_code = status.HTTP_200_OK,
-    summary = "Delete a tweet"
+    summary = "Delete a tweet",
+    tags = ["Tweets"]
     )
 
 def delete_a_tweet():
@@ -181,7 +181,8 @@ def delete_a_tweet():
     path = "tweets/{tweet_id}/update",
     response_model = Tweet,
     status_code = status.HTTP_200_OK,
-    summary = "Update a tweet"
+    summary = "Update a tweet",
+    tags = ["Tweets"]
 )
 
 def update_a_tweet():
