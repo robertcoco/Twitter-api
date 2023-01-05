@@ -49,6 +49,13 @@ class User(UserBase):
 
     birth_date : Optional[date] = Field(default = None)
 
+class UserRegister(User):
+    password: str = Field(
+        ...,
+        min_length = 8,
+        max_length = 64
+        )
+
 
 
 # Path operations
@@ -65,7 +72,25 @@ class User(UserBase):
     )
 
 def register():
-    pass
+    """
+    Signup
+
+    This function register a user in the app
+
+    Paremeters:
+
+        - Request body paremeter:
+
+            - UserRegister
+    
+    Returns a json with the basic user information
+
+        - user_id : UUID
+        - first_name: str
+        - last_name: str
+        - Email: EmailStr
+
+    """
 
 ### Login a user
 @app.post(
