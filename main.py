@@ -18,11 +18,6 @@ app = FastAPI()
 
 #Models
 
-class Tweet(BaseModel):
-    tweet_id : UUID = Field(...)
-    content : str = Field(...)
-    created_at: datetime = Field(...)
-    updated_at: datetime = Field(default = datetime.now())
 
 class UserBase(BaseModel):
     user_id : UUID = Field(...)
@@ -66,6 +61,16 @@ class UserRegister(User):
         example = "angeleselmejor10"
         )
 
+class Tweet(BaseModel):
+    tweet_id : UUID = Field(...)
+    content : str = Field(
+        ...,
+        min_length=1,
+        max_length=250
+        )
+    created_at: datetime = Field(...)
+    updated_at: Optional[datetime]= Field(default = datetime.now())
+    by: User = Field(...)
 
 
 # Path operations
@@ -227,8 +232,40 @@ def show_a_tweet():
     tags = ["Tweets"]
     )
 
-def post():
-    pass
+def post(tweet: Tweet = Body(...)):
+    """
+    - Post a tweet
+
+    - This function post a tweet 
+
+    - Parameters: 
+
+        - Request body parameters:
+
+            - tweet: Tweet
+    
+    - Returns a json with the basic tweet information
+
+        - tweet_id : UUID 
+        - content : str
+        - created_at: datetime
+        - updated_at: Optional[datetime]
+        - by: User
+
+    """
+    with open ("tweets.json", "r+", encoding = "utf-8") as f:
+        results = json.loads(f.read())
+        tweet_dict = tweet.dict()
+        tweet_dict["tweet_id"] = str(tweet_dict["tweet_id"])
+        tweet_dict["created_at"] = str(tweet_dict["created_at"])   
+        tweet_dict["updated_at"] = str(tweet_dict["updated_at"])
+        tweet_dict["by"]["user_id"]  = str(tweet_dict["by"]["user_id"])
+        tweet_dict["by"]["birth_date"] = str(tweet_dict["by"]["birth_date"])
+        results.append(tweet_dict)
+        f.seek(0)
+        f.write(json.dumps(results))
+        return tweet
+
 
 ### Delete a tweet
 @app.delete(
