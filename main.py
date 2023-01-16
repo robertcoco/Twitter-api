@@ -460,15 +460,59 @@ def home():
         return results
 ### Show a tweet
 @app.get(
-    path = "tweets/{tweet_id}",
+    path = "/tweets/{tweet_id}",
     response_model = Tweet,
     status_code = status.HTTP_200_OK,
     summary  = "Show a tweet",
     tags = ["Tweets"]
     )
 
-def show_a_tweet():
-    pass
+def show_a_tweet(
+    tweet_id: str = Path(
+        ...,
+        example = "3fa82f64-5717-4562-b3fc-2c963f66afa9"
+        )
+):
+    """
+    - Show tweet
+
+    - Show the basic information the tweet
+
+    - Parameters:
+
+        - path parameter:
+
+            - tweet_id : UUID
+    
+    - Returs a json with the tweet information:
+
+        - tweet_id : UUID 
+        - content : str
+        - created_at: datetime
+        - updated_at: Optional[datetime]
+        - by: User
+
+    """
+    with open ("tweets.json", "r", encoding = "utf-8") as f:
+
+        results = json.loads(f.read())
+        tweet_id_array = []
+
+        for result in results: 
+
+            tweet_id_array.append(str(result["tweet_id"]))
+
+            if result["tweet_id"] == str(tweet_id) :
+                tweet = result
+
+        if str(tweet_id) not in tweet_id_array:
+
+            raise HTTPException (
+                status_code = status.HTTP_404_NOT_FOUND,
+                detail = "the tweet id is not correct."
+            )
+
+        return tweet
 
 ### Post a tweet
 @app.post(
@@ -513,27 +557,132 @@ def post(tweet: Tweet = Body(...)):
         f.write(json.dumps(results))
         return tweet
 
-
 ### Delete a tweet
 @app.delete(
-    path = "tweets/{tweet_id}/delete",
+    path = "/tweets/{tweet_id}/delete",
     response_model = Tweet,
     status_code = status.HTTP_200_OK,
     summary = "Delete a tweet",
     tags = ["Tweets"]
     )
 
-def delete_a_tweet():
-    pass
+def delete_a_tweet(
+    tweet_id: str = Path(
+        ...,
+        example= "3fa85f64-5717-4562-b3fc-2c963f66afa9"
+        )
+):
+    """
+    - Delete a tweet
+
+    - This function deletes a tweet
+
+    - Parameters:
+
+        - path parameters: 
+
+            - tweet_id : UUID
+    
+    - Returns a json with the deleted tweet:
+
+        - tweet_id : UUID 
+        - content : str
+        - created_at: datetime
+        - updated_at: Optional[datetime]
+        - by: User
+
+    """
+
+    with open ("tweets.json", "r+", encoding = "utf-8") as f:
+        results = json.loads(f.read())
+
+        tweet_id_array = []
+
+        for result in results:
+
+            tweet_id_array.append(result["tweet_id"])
+
+            if str(tweet_id) == result["tweet_id"]:
+
+                results.remove(result)
+                tweet = result
+            
+        f.seek(0)
+        f.write(json.dumps(results))
+        f.truncate()
+        return tweet
+    
 
 ### Update a tweet
 @app.put(
-    path = "tweets/{tweet_id}/update",
+    path = "/tweets/{tweet_id}/update",
     response_model = Tweet,
     status_code = status.HTTP_200_OK,
     summary = "Update a tweet",
     tags = ["Tweets"]
 )
 
-def update_a_tweet():
-    pass
+def update_a_tweet(
+    tweet_id : str = Path(...),
+    tweet : Tweet = Body(...)
+):
+    """
+    - Update tweet
+
+    - This function updates a tweet
+
+    - Parameters:
+
+        - Request body parameters:
+
+            - User object with the following keys:
+
+                - tweet_id : UUID
+                - first_name: str
+                - last_name: str
+                - Email: EmailStr
+                - Birth_date: datetime
+
+        - Path parameters:
+
+            - user_id : UUID
+
+        - Returns a json with updated user:
+
+            - tweet_id : UUID 
+            - content : str
+            - created_at: datetime
+            - updated_at: Optional[datetime]
+            - by: User
+
+    """
+    with open ("tweets.json", "r+", encoding = "utf-8") as f:
+        results = json.loads(f.read())
+        tweet_dict = tweet.dict()
+        tweet_id_array = []
+
+        for index, result in enumerate(results) :
+
+            tweet_id_array.append(result["tweet_id"])
+
+            if str(tweet_id) == result["tweet_id"]:
+                tweet_dict["created_at"] = str(tweet_dict["created_at"])   
+                tweet_dict["updated_at"] = str(tweet_dict["updated_at"])
+                tweet_dict["by"]["user_id"]  = str(tweet_dict["by"]["user_id"])
+                tweet_dict["by"]["birth_date"] = str(tweet_dict["by"]["birth_date"])
+                tweet_dict["tweet_id"] = str(tweet_id)
+                result = tweet_dict
+                unique_tweet = tweet_dict
+                results[index] = unique_tweet
+
+        if str(tweet_id) not in tweet_id_array:
+
+            HTTPException (
+                status_code= status.HTTP_404_NOT_FOUND,
+                detail = "Tweet id is not correct, please introduce it again."
+            )
+
+        f.seek(0)
+        f.write(json.dumps(results))
+        f.truncate()
+        return unique_tweet

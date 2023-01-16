@@ -13,29 +13,16 @@
         }
     },
     {
-        "tweet_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "content": "string",
-        "created_at": "2023-01-12 02:31:16.283000+00:00",
-        "updated_at": "2023-01-11 22:31:10.224146",
+        "tweet_id": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
+        "content": "tweet en twitter",
+        "created_at": "2023-01-16 16:16:44.713000+00:00",
+        "updated_at": "2023-01-16 12:15:31.899361",
         "by": {
-            "user_id": "3fa82f64-5717-4562-b3fc-2c963f66afa6",
-            "Email": "luisito@example.com",
-            "first_name": "Luis Alberto",
+            "user_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "Email": "roberto@example.com",
+            "first_name": "Roberto \u00c1ngel",
             "last_name": "Abad De Los santos",
-            "birth_date": "2012-02-12"
-        }
-    },
-    {
-        "tweet_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "content": "Este es primir tweet en twitter valga la redundancia.",
-        "created_at": "2023-01-12 02:31:16.283000+00:00",
-        "updated_at": "2023-01-11 22:31:10.224146",
-        "by": {
-            "user_id": "3fa82f64-5717-4562-b3fc-2c963f66afa6",
-            "Email": "Albertico@example.com",
-            "first_name": "Alberto",
-            "last_name": "santos",
-            "birth_date": "2012-02-13"
+            "birth_date": "2003-09-10"
         }
     }
 ]
